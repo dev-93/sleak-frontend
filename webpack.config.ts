@@ -35,25 +35,28 @@ const config: webpack.Configuration = {
                 test: /\.tsx?$/,
                 loader: 'babel-loader',
                 options: {
-                presets: [
-                    [
-                        '@babel/preset-env',
-                        {
-                            targets: { browsers: ['IE 10'] },
-                            debug: isDevelopment,
-                        },
+                    presets: [
+                        [
+                            '@babel/preset-env',
+                            {
+                                targets: { browsers: ['IE 10'] },
+                                debug: isDevelopment,
+                            },
+                        ],
+                        '@babel/preset-react',
+                        '@babel/preset-typescript',
                     ],
-                    '@babel/preset-react',
-                    '@babel/preset-typescript',
-                ],
-                env: {
-                    development: {
-                        // plugins: [['@emotion/babel-plugin', { sourceMap: true }], require.resolve('react-refresh/babel')],
+                    env: {
+                        development: {
+                            plugins: [
+                                ['@emotion/babel-plugin', { sourceMap: true }],
+                                require.resolve('react-refresh/babel'),
+                            ],
+                        },
+                        production: {
+                            plugins: ['@emotion/babel-plugin'],
+                        },
                     },
-                    production: {
-                        plugins: ['@emotion/babel-plugin'],
-                    },
-                },
                 },
             },
             {
@@ -76,11 +79,10 @@ const config: webpack.Configuration = {
         filename: '[name].js',
         publicPath: '/dist/',
     },
-  
 };
 
 if (isDevelopment && config.plugins) {
-    // config.plugins.push(new webpack.HotModuleReplacementPlugin());
+    config.plugins.push(new webpack.HotModuleReplacementPlugin());
     // config.plugins.push(
     //     new ReactRefreshWebpackPlugin({
     //         overlay: {
