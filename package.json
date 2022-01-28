@@ -1,0 +1,8 @@
+{
+  "name": "sleak-frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/dev-93/sleak-frontend.git",
+  "author": "Kim Taenam <cjb940103@gmail.com>",
+  "license": "MIT"
+}
