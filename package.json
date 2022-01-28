@@ -4,5 +4,12 @@
   "main": "index.js",
   "repository": "https://github.com/dev-93/sleak-frontend.git",
   "author": "Kim Taenam <cjb940103@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "typescript": "^4.5.5"
+  }
 }
