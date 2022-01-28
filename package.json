@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack serve --env development"
   },
   "repository": "https://github.com/dev-93/sleak-frontend.git",
   "author": "Kim Taenam <cjb940103@gmail.com>",
@@ -15,6 +16,7 @@
     "cross-env": "^7.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-refresh": "^0.11.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.5.5"
   },
@@ -23,14 +25,21 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+    "@types/fork-ts-checker-webpack-plugin": "^0.4.5",
+    "@types/webpack-bundle-analyzer": "^4.4.1",
+    "@types/webpack-dev-server": "^4.7.2",
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
     "eslint": "^8.7.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "fork-ts-checker-webpack-plugin": "^6.5.0",
     "prettier": "^2.5.1",
     "style-loader": "^3.3.1",
     "webpack": "^5.67.0",
-    "webpack-cli": "^4.9.2"
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.3"
   }
 }
