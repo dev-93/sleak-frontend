@@ -8,8 +8,7 @@ import { Navigate } from 'react-router-dom';
 import fetcher from '@utils/fetcher';
 
 const LogIn = () => {
-  // const { data: userData, error, mutate } = useSWR('/api/users', fetcher);
-  const { data, error } = useSWR('http://localhost:3095/api/users', fetcher);
+  const { data, error, mutate } = useSWR('http://localhost:3095/api/users', fetcher);
   const [logInError, setLogInError] = useState(false);
   const [email, onChangeEmail] = useInput('');
   const [password, onChangePassword] = useInput('');
@@ -26,8 +25,7 @@ const LogIn = () => {
           },
         )
         .then((data) => {
-          console.log(data);
-          // mutate();
+          mutate();
         })
         .catch((error) => {
           setLogInError(error.response?.data?.code === 401);
@@ -35,6 +33,10 @@ const LogIn = () => {
     },
     [email, password],
   );
+
+  if (data) {
+    return <Navigate replace to="/workspace/channel" />;
+  }
 
   // console.log(error, userData);
   // if (!error && userData) {
