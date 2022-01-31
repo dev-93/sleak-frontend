@@ -1,11 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 
-const fetcher = (url: string) => {
-  axios
-    .get(url, {
-      withCredentials: true,
-    })
-    .then((response: AxiosResponse) => response.data);
-};
+const fetcher = (url: string) => axios.get(url, { withCredentials: true }).then((response) => response.data);
 
 export default fetcher;
