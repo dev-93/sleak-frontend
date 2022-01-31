@@ -2,9 +2,8 @@ import useInput from '@hooks/useInput';
 import { Button, Error, Form, Header, Input, Label, LinkContainer } from '@pages/SignUp/style';
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import useSWR from 'swr';
-import { Navigate } from 'react-router-dom';
 import fetcher from '@utils/fetcher';
 
 const LogIn = () => {
@@ -24,8 +23,8 @@ const LogIn = () => {
             withCredentials: true,
           },
         )
-        .then((data) => {
-          mutate();
+        .then((res) => {
+          mutate(res.data, false);
         })
         .catch((error) => {
           setLogInError(error.response?.data?.code === 401);
@@ -33,6 +32,10 @@ const LogIn = () => {
     },
     [email, password],
   );
+
+  if (data === undefined) {
+    return <div>로딩중...</div>;
+  }
 
   if (data) {
     return <Navigate replace to="/workspace/channel" />;
