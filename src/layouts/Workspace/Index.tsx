@@ -55,8 +55,8 @@ const Workspace: FC = ({ children }) => {
         </Channels>
         <Chats>
           <Routes>
-            <Route path="/workspace/channel" element={<Channel />} />
-            <Route path="/workspace/dm" element={<DirectMessage />} />
+            <Route path="/channel" element={<Channel />} />
+            <Route path="/dm" element={<DirectMessage />} />
           </Routes>
         </Chats>
       </WorkspaceWrapper>

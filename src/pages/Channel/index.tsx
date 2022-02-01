@@ -1,12 +1,8 @@
-import Workspace from '@layouts/Workspace/Index';
 import React from 'react';
+import { Container } from '@pages/Channel/style';
 
 const Channel = () => {
-  return (
-    <Workspace>
-      <div>hello</div>
-    </Workspace>
-  );
+  return <Container>Channel </Container>;
 };
 
 export default Channel;
