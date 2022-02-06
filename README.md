@@ -6,8 +6,10 @@
 - DM 보내기
 - 채널 만들기
 
+
 ## 초기셋팅
 - webpack, Babel
+ 
 
 ## 사용기술
 - React, Typescript
