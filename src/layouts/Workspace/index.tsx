@@ -23,7 +23,7 @@ import gravatar from 'gravatar';
 import loadble from '@loadable/component';
 import Menu from '@components/Menu';
 import { Link } from 'react-router-dom';
-import { IUser } from '@typings/db';
+import { IChannel, IUser } from '@typings/db';
 import Modal from '@components/Modal';
 import { Button, Input, Label } from '@pages/SignUp/style';
 import useInput from '@hooks/useInput';
@@ -42,6 +42,7 @@ const Workspace: VFC = () => {
     error,
     mutate: revalidateUser,
   } = useSWR<IUser | false>('http://localhost:3095/api/users', fetcher);
+  const { data: channelData } = useSWR<IChannel[]>(userData ? `/api/workspaces/${workspace}/channels` : null, fetcher);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   const [newWorkspace, onChangeNewWorkspace, setNewWorkspace] = useInput('');
@@ -95,6 +96,7 @@ const Workspace: VFC = () => {
         .then(() => {
           revalidateUser();
           setShowCreateWorkspaceModal(false);
+          setShowCreateChannelModal(false);
           setNewWorkspace('');
           setNewUrl('');
         })
@@ -161,7 +163,7 @@ const Workspace: VFC = () => {
         </Workspaces>
         <Channels>
           <WorkspaceName onClick={toggleWorkspaceModal}>
-            {userData?.Workspaces.find((v) => v.url === workspace)}
+            {userData?.Workspaces.find((v) => v.url === workspace)?.name}
           </WorkspaceName>
           <MenuScroll>
             <Menu show={showWorkspaceModal} onCloseModal={toggleWorkspaceModal} style={{ top: 95, left: 80 }}>
@@ -172,12 +174,15 @@ const Workspace: VFC = () => {
                 <button onClick={onLogOut}>로그아웃</button>
               </WorkspaceModal>
             </Menu>
+            {channelData?.map((v: IChannel) => (
+              <div key={v.id}>{v.name}</div>
+            ))}
           </MenuScroll>
         </Channels>
         <Chats>
           <Routes>
-            <Route path="/channel" element={<Channel />} />
-            <Route path="/dm" element={<DirectMessage />} />
+            <Route path="/channel/:channel" element={<Channel />} />
+            <Route path="/dm/:id" element={<DirectMessage />} />
           </Routes>
         </Chats>
       </WorkspaceWrapper>
