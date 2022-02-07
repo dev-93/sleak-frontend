@@ -17,10 +17,9 @@ import {
 import fetcher from '@utils/fetcher';
 import axios from 'axios';
 import React, { VFC, useCallback, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router';
+import { Navigate } from 'react-router';
 import useSWR from 'swr';
 import gravatar from 'gravatar';
-import loadble from '@loadable/component';
 import Menu from '@components/Menu';
 import { Link } from 'react-router-dom';
 import { IChannel, IUser } from '@typings/db';
@@ -30,9 +29,8 @@ import useInput from '@hooks/useInput';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router';
 import CreateChannelModal from '@components/CreateChannelModal';
-
-const Channel = loadble(() => import('@pages/Channel'));
-const DirectMessage = loadble(() => import('@pages/DirectMessage'));
+import InviteWorkspaceModal from '@components/InviteWorkspaceModal';
+import InviteChannelModal from '@components/InviteChannelModal';
 
 const Workspace: VFC = () => {
   const params = useParams<{ workspace?: string }>();
@@ -48,6 +46,7 @@ const Workspace: VFC = () => {
   const [newWorkspace, onChangeNewWorkspace, setNewWorkspace] = useInput('');
   const [showWorkspaceModal, setShowWorkspaceModal] = useState(false);
   const [showInviteWorkspaceModal, setShowInviteWorkspaceModal] = useState(false);
+  const [showInviteChannelModal, setShowInviteChannelModal] = useState(false);
   const [showCreateChannelModal, setShowCreateChannelModal] = useState(false);
   const [newUrl, onChangeNewUrl, setNewUrl] = useInput('');
 
@@ -119,13 +118,15 @@ const Workspace: VFC = () => {
   const onCloseModal = useCallback(() => {
     setShowCreateWorkspaceModal(false);
     setShowCreateChannelModal(false);
+    setShowInviteChannelModal(false);
+    setShowInviteWorkspaceModal(false);
   }, []);
 
   const toggleWorkspaceModal = useCallback(() => {
     setShowWorkspaceModal((prev) => !prev);
   }, []);
 
-  if (userData === false) {
+  if (!userData) {
     return <Navigate replace to="/login" />;
   }
 
@@ -154,7 +155,7 @@ const Workspace: VFC = () => {
         <Workspaces>
           {userData?.Workspaces.map((v: any) => {
             return (
-              <Link key={v.id} to={`/workspace/${123}/channel/일반`}>
+              <Link key={v.id} to={`/workspace/${v.name.toLowerCase()}/channel/일반`}>
                 <WorkspaceButton>{v.name.slice(0, 1).toUpperCase()}</WorkspaceButton>
               </Link>
             );
@@ -179,12 +180,7 @@ const Workspace: VFC = () => {
             ))}
           </MenuScroll>
         </Channels>
-        <Chats>
-          <Routes>
-            <Route path="/channel/:channel" element={<Channel />} />
-            <Route path="/dm/:id" element={<DirectMessage />} />
-          </Routes>
-        </Chats>
+        <Chats />
       </WorkspaceWrapper>
       <Modal show={showCreateWorkspaceModal} onCloseModal={onCloseModal}>
         <form onSubmit={onCreateWorkspace}>
@@ -203,6 +199,16 @@ const Workspace: VFC = () => {
         show={showCreateChannelModal}
         onCloseModal={onCloseModal}
         setShowCreateChannelModal={setShowCreateChannelModal}
+      />
+      <InviteWorkspaceModal
+        show={showInviteWorkspaceModal}
+        onCloseModal={onCloseModal}
+        setShowInviteWorkspaceModal={setShowInviteWorkspaceModal}
+      />
+      <InviteChannelModal
+        show={showInviteChannelModal}
+        onCloseModal={onCloseModal}
+        setShowInviteChannelModal={setShowInviteChannelModal}
       />
     </div>
   );
