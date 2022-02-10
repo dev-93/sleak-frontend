@@ -153,7 +153,7 @@ const Workspace: VFC = () => {
       </Header>
       <WorkspaceWrapper>
         <Workspaces>
-          {userData?.Workspaces.map((v: any) => {
+          {userData?.Workspaces?.map((v: any) => {
             return (
               <Link key={v.id} to={`/workspace/${v.name.toLowerCase()}/channel/일반`}>
                 <WorkspaceButton>{v.name.slice(0, 1).toUpperCase()}</WorkspaceButton>
@@ -164,12 +164,12 @@ const Workspace: VFC = () => {
         </Workspaces>
         <Channels>
           <WorkspaceName onClick={toggleWorkspaceModal}>
-            {userData?.Workspaces.find((v) => v.url === workspace)?.name}
+            {userData?.Workspaces?.find((v) => v.url === workspace)?.name}
           </WorkspaceName>
           <MenuScroll>
             <Menu show={showWorkspaceModal} onCloseModal={toggleWorkspaceModal} style={{ top: 95, left: 80 }}>
               <WorkspaceModal>
-                <h2>{userData?.Workspaces.find((v) => v.url === workspace)?.name}</h2>
+                <h2>{userData?.Workspaces?.find((v) => v.url === workspace)?.name}</h2>
                 <button onClick={onClickInviteWorkspace}>워크스페이스에 사용자 초대</button>
                 <button onClick={onClickAddChannel}>채널 만들기</button>
                 <button onClick={onLogOut}>로그아웃</button>
