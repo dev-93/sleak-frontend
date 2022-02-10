@@ -35,12 +35,9 @@ import InviteChannelModal from '@components/InviteChannelModal';
 const Workspace: VFC = () => {
   const params = useParams<{ workspace?: string }>();
   const { workspace } = params;
-  const {
-    data: userData,
-    error,
-    mutate: revalidateUser,
-  } = useSWR<IUser | false>('http://localhost:3095/api/users', fetcher);
+  const { data: userData, error, mutate: revalidateUser } = useSWR<IUser | false>('/api/users', fetcher);
   const { data: channelData } = useSWR<IChannel[]>(userData ? `/api/workspaces/${workspace}/channels` : null, fetcher);
+  const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showCreateWorkspaceModal, setShowCreateWorkspaceModal] = useState(false);
   const [newWorkspace, onChangeNewWorkspace, setNewWorkspace] = useInput('');
@@ -52,7 +49,7 @@ const Workspace: VFC = () => {
 
   const onLogOut = useCallback(() => {
     axios
-      .post('http://localhost:3095/api/users/logout', null, {
+      .post('/api/users/logout', null, {
         withCredentials: true,
       })
       .then(() => {
