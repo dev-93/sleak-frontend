@@ -27,10 +27,6 @@ const EachChannel: VFC<Props> = ({ channel }) => {
     }
   }, [mutate, location.pathname, workspace, channel]);
 
-  // console.log(workspace, location, channel);
-  //   console.log(decodeURI(location.pathname));
-  //   console.log(channel.name);
-
   return (
     <NavLink
       key={channel.name}
