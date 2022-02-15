@@ -17,22 +17,25 @@ import {
 import fetcher from '@utils/fetcher';
 import axios from 'axios';
 import React, { VFC, useCallback, useState } from 'react';
-import { Navigate } from 'react-router';
+import { useParams } from 'react-router';
 import useSWR from 'swr';
 import gravatar from 'gravatar';
 import Menu from '@components/Menu';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import { IChannel, IUser } from '@typings/db';
 import Modal from '@components/Modal';
 import { Button, Input, Label } from '@pages/SignUp/style';
 import useInput from '@hooks/useInput';
 import { toast } from 'react-toastify';
-import { useParams } from 'react-router';
 import CreateChannelModal from '@components/CreateChannelModal';
 import InviteWorkspaceModal from '@components/InviteWorkspaceModal';
 import InviteChannelModal from '@components/InviteChannelModal';
 import ChannelList from '@components/ChannelList';
 import DMList from '@components/DMList';
+import loadble from '@loadable/component';
+
+const Channel = loadble(() => import('@pages/Channel'));
+const DirectMessage = loadble(() => import('@pages/DirectMessage'));
 
 const Workspace: VFC = () => {
   const params = useParams<{ workspace?: string }>();
@@ -126,7 +129,7 @@ const Workspace: VFC = () => {
   }, []);
 
   if (!userData) {
-    return <Navigate replace to="/login" />;
+    return <Redirect to="/login" />;
   }
 
   return (
@@ -178,7 +181,12 @@ const Workspace: VFC = () => {
             <DMList />
           </MenuScroll>
         </Channels>
-        <Chats />
+        <Chats>
+          <Switch>
+            <Route path="/workspace/:workspace/channel/:channel" component={Channel} />
+            <Route path="/workspace/:workspace/dm/:id" component={DirectMessage} />
+          </Switch>
+        </Chats>
       </WorkspaceWrapper>
       <Modal show={showCreateWorkspaceModal} onCloseModal={onCloseModal}>
         <form onSubmit={onCreateWorkspace}>

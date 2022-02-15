@@ -2,7 +2,7 @@ import useInput from '@hooks/useInput';
 import { Button, Error, Form, Header, Input, Label, LinkContainer } from '@pages/SignUp/style';
 import axios from 'axios';
 import React, { useCallback, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
 
@@ -38,13 +38,13 @@ const LogIn = () => {
   }
 
   if (data) {
-    return <Navigate replace to="/workspace/sleact/channel/일반" />;
+    return <Redirect to="/workspace/sleact/channel/일반" />;
   }
 
   // console.log(error, userData);
   // if (!error && userData) {
   //   console.log('로그인됨', userData);
-  //   return <Navigate replace to="/workspace/sleact/channel/일반" />;
+  //   return <Redirect replace to="/workspace/sleact/channel/일반" />;
   // }
 
   return (

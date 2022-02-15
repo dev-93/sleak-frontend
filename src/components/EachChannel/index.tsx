@@ -28,11 +28,7 @@ const EachChannel: VFC<Props> = ({ channel }) => {
   }, [mutate, location.pathname, workspace, channel]);
 
   return (
-    <NavLink
-      key={channel.name}
-      className={({ isActive }) => (isActive ? 'selected' : 'not')}
-      to={`/workspace/${workspace}/channel/${channel.name}`}
-    >
+    <NavLink key={channel.name} activeClassName="selected" to={`/workspace/${workspace}/channel/${channel.name}`}>
       <span className={count !== undefined && count > 0 ? 'bold' : undefined}># {channel.name}</span>
       {count !== undefined && count > 0 && <span className="count">{count}</span>}
     </NavLink>

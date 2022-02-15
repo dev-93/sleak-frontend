@@ -2,10 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { Button, Error, Form, Header, Input, Label, LinkContainer, Success } from '@pages/SignUp/style';
 import useInput from '@hooks/useInput';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import useSWR from 'swr';
 import fetcher from '@utils/fetcher';
-import { Navigate } from 'react-router-dom';
 
 const SignUp = () => {
   const { data, error, mutate } = useSWR('/api/users', fetcher);
@@ -65,7 +64,7 @@ const SignUp = () => {
   }
 
   if (data) {
-    return <Navigate replace to="/workspace/sleact/channel/일반" />;
+    return <Redirect to="/workspace/sleact/channel/일반" />;
   }
 
   return (
