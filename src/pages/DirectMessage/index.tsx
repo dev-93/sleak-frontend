@@ -46,7 +46,7 @@ const DirectMessage = () => {
       </Header>
 
       <ChatList />
-      <ChatBox chat={chat} onChangeChat={onChangeChat} onSubmitForm={onSubmitForm} placeholder="world" />
+      <ChatBox chat={chat} onChangeChat={onChangeChat} onSubmitForm={onSubmitForm} placeholder="입력해주세요" />
     </Container>
   );
 };
