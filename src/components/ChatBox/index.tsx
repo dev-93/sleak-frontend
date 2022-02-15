@@ -6,71 +6,21 @@ import React, { FC, useCallback, useEffect, useRef } from 'react';
 import { Mention, SuggestionDataItem } from 'react-mentions';
 
 interface Props {
-  onSubmitForm: (e: any) => void;
+  // onSubmitForm: (e: any) => void;
   chat?: string;
-  onChangeChat: (e: any) => void;
-  placeholder: string;
-  data?: IUser[];
+  // onChangeChat: (e: any) => void;
+  // placeholder: string;
+  // data?: IUser[];
 }
-const ChatBox: FC<Props> = ({ onSubmitForm, chat, onChangeChat, placeholder, data }) => {
+const ChatBox: FC<Props> = ({ chat }) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  //   useEffect(() => {
-  //     if (textareaRef.current) {
-  //       autosize(textareaRef.current);
-  //     }
-  //   }, []);
-
-  const onKeydownChat = useCallback(
-    (e) => {
-      if (e.key === 'Enter') {
-        if (!e.shiftKey) {
-          e.preventDefault();
-          onSubmitForm(e);
-        }
-      }
-    },
-    [onSubmitForm],
-  );
-
-  const renderUserSuggestion: (
-    suggestion: SuggestionDataItem,
-    search: string,
-    highlightedDisplay: React.ReactNode,
-    index: number,
-    focused: boolean,
-  ) => React.ReactNode = useCallback(
-    (member, search, highlightedDisplay, index, focus) => {
-      if (!data) {
-        return null;
-      }
-      return (
-        <EachMention focus={focus}>
-          <img src={gravatar.url(data[index].email, { s: '20px', d: 'retro' })} alt={data[index].nickname} />
-          <span>{highlightedDisplay}</span>
-        </EachMention>
-      );
-    },
-    [data],
-  );
+  const onSubmitForm = useCallback(() => {}, []);
 
   return (
     <ChatArea>
       <Form onSubmit={onSubmitForm}>
-        <MentionsTextarea
-          id="editor-chat"
-          value={chat}
-          onChange={onChangeChat}
-          onKeyPress={onKeydownChat}
-          placeholder={placeholder}
-          inputRef={textareaRef}
-          allowSuggestionsAboveCursor
-        >
-          {/* <Mention
-            appendSpaceOnAdd
-            trigger="@"
-            data={data?.map((v) => ({ id: v.id, display: v.nickname })) || []}
-            renderSuggestion={renderUserSuggestion}
-          /> */}
+        <MentionsTextarea>
+          <textarea></textarea>
         </MentionsTextarea>
         <Toolbox>
           <SendButton

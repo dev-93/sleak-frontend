@@ -1,6 +1,7 @@
 // import EachDM from '@components/EachDM';
 // import useSocket from '@hooks/useSocket';
 import { CollapseButton } from '@components/DMList/style';
+import EachDM from '@components/EachDM';
 import { IDM, IUser, IUserWithOnline } from '@typings/db';
 import fetcher from '@utils/fetcher';
 import React, { FC, useCallback, useEffect, useState } from 'react';
@@ -56,7 +57,7 @@ const DMList = () => {
         {!channelCollapse &&
           memberData?.map((member) => {
             const isOnline = onlineList.includes(member.id);
-            // return <EachDM key={member.id} member={member} isOnline={isOnline} />;
+            return <EachDM key={member.id} member={member} isOnline={isOnline} />;
           })}
       </div>
     </>
