@@ -16,7 +16,7 @@ import {
 } from '@layouts/Workspace/style';
 import fetcher from '@utils/fetcher';
 import axios from 'axios';
-import React, { VFC, useCallback, useState } from 'react';
+import React, { VFC, useCallback, useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import useSWR from 'swr';
 import gravatar from 'gravatar';
@@ -33,6 +33,7 @@ import InviteChannelModal from '@components/InviteChannelModal';
 import ChannelList from '@components/ChannelList';
 import DMList from '@components/DMList';
 import loadble from '@loadable/component';
+import useSocket from '@hooks/useSocket';
 
 const Channel = loadble(() => import('@pages/Channel'));
 const DirectMessage = loadble(() => import('@pages/DirectMessage'));
@@ -40,6 +41,7 @@ const DirectMessage = loadble(() => import('@pages/DirectMessage'));
 const Workspace: VFC = () => {
   const params = useParams<{ workspace?: string }>();
   const { workspace } = params;
+  const [socket, disconnectSocket] = useSocket(workspace);
   const { data: userData, error, mutate: revalidateUser } = useSWR<IUser | false>('/api/users', fetcher);
   const { data: channelData } = useSWR<IChannel[]>(userData ? `/api/workspaces/${workspace}/channels` : null, fetcher);
   const { data: memberData } = useSWR<IUser[]>(userData ? `/api/workspaces/${workspace}/members` : null, fetcher);
@@ -61,6 +63,20 @@ const Workspace: VFC = () => {
         revalidateUser();
       });
   }, []);
+
+  useEffect(() => {
+    return () => {
+      console.info('disconnect socket', workspace);
+      disconnectSocket();
+    };
+  }, [disconnectSocket, workspace]);
+
+  useEffect(() => {
+    if (channelData && userData && socket) {
+      console.info('로그인하자', socket);
+      socket?.emit('login', { id: userData?.id, channels: channelData.map((v) => v.id) });
+    }
+  }, [socket, userData, channelData]);
 
   const onClickUserProfile = useCallback(() => {
     setShowUserMenu((prev) => !prev);
