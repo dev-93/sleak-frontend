@@ -44,8 +44,7 @@ const DirectMessage = () => {
       <Header>
         <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
       </Header>
-
-      <ChatList />
+      <ChatList chatData={chatData} />
       <ChatBox chat={chat} onChangeChat={onChangeChat} onSubmitForm={onSubmitForm} placeholder="입력해주세요" />
     </Container>
   );
