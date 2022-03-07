@@ -21,6 +21,7 @@ const Chat: FC<Props> = memo(({ data }) => {
           <b>{user.nickname}</b>
           <span>{dayjs(data.createdAt).format('h:mm A')}</span>
         </div>
+        <p>{data.content}</p>
       </div>
     </ChatWrapper>
   );
