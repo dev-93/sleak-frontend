@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Container, Header } from './style';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
 import { useParams } from 'react-router';
 import fetcher from '@utils/fetcher';
 import gravatar from 'gravatar';
@@ -28,6 +28,10 @@ const DirectMessage = () => {
         axios
           .post(`/api/workspaces/${workspace}/dms/${id}/chats`, {
             content: chat,
+          })
+          .then(() => {
+            mutateChat();
+            setChat('');
           })
           .catch(console.error);
       }
