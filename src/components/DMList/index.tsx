@@ -30,12 +30,9 @@ const DMList = () => {
 
   useEffect(() => {
     socket?.on('onlineList', (data: number[]) => {
-      // console.log(data);
       setOnlineList(data);
     });
-    // console.log('socket on dm', socket?.hasListeners('dm'), socket);
     return () => {
-      // console.log('socket off dm', socket?.hasListeners('dm'));
       socket?.off('onlineList');
     };
   }, [socket]);
