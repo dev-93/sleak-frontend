@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Container, Header } from './style';
-import useSWR, { mutate } from 'swr';
+import useSWR from 'swr';
 import { useParams } from 'react-router';
 import fetcher from '@utils/fetcher';
 import gravatar from 'gravatar';
