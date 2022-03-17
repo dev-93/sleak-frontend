@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Container, Header } from './style';
 import useSWR from 'swr';
 import { useParams } from 'react-router';
@@ -45,12 +45,23 @@ const DirectMessage = () => {
           .then(() => {
             mutateChat();
             setChat('');
+            if (scrollbarRef.current) {
+              scrollbarRef.current?.scrollToBottom();
+            }
           })
           .catch(console.error);
       }
     },
     [chat, workspace, id, myData, userData, chatData, mutateChat, setChat],
   );
+
+  console.log(scrollbarRef);
+
+  useEffect(() => {
+    if (chatData?.length === 1) {
+      scrollbarRef.current?.scrollToBottom();
+    }
+  }, [chatData]);
 
   if (!userData || !myData) {
     return null;
@@ -71,9 +82,8 @@ const DirectMessage = () => {
         <img src={gravatar.url(userData.email, { s: '24px', d: 'retro' })} alt={userData.nickname} />
         <span>{userData.nickname}</span>
       </Header>
-      {/* <ChatList chatSections={chatSections} ref={scrollbarRef} setSize={setSize} /> */}
       <ChatList
-        ref={scrollbarRef}
+        scrollbarRef={scrollbarRef}
         isReachingEnd={isReachingEnd}
         isEmpty={isEmpty}
         chatSections={chatSections}
