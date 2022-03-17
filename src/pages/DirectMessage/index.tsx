@@ -34,28 +34,39 @@ const DirectMessage = () => {
   const isEmpty = chatData?.[0]?.length === 0;
   const isReachingEnd = isEmpty || (chatData && chatData[chatData.length - 1]?.length < PAGE_SIZE);
   const scrollbarRef = useRef<Scrollbars>(null);
+
   const onSubmitForm = useCallback(
     (e) => {
       e.preventDefault();
       if (chat?.trim() && chatData) {
+        const savedChat = chat;
+        mutateChat((prevChatData) => {
+          prevChatData?.[0].unshift({
+            id: (chatData[0][0]?.id || 0) + 1,
+            content: savedChat,
+            SenderId: myData.id,
+            Sender: myData,
+            ReceiverId: userData.id,
+            Receiver: userData,
+            createdAt: new Date(),
+          });
+          return prevChatData;
+        }, false).then(() => {
+          setChat('');
+          if (scrollbarRef.current) {
+            console.log('scrollToBottom!', scrollbarRef.current?.getValues());
+            scrollbarRef.current.scrollToBottom();
+          }
+        });
         axios
           .post(`/api/workspaces/${workspace}/dms/${id}/chats`, {
             content: chat,
-          })
-          .then(() => {
-            mutateChat();
-            setChat('');
-            if (scrollbarRef.current) {
-              scrollbarRef.current?.scrollToBottom();
-            }
           })
           .catch(console.error);
       }
     },
     [chat, workspace, id, myData, userData, chatData, mutateChat, setChat],
   );
-
-  console.log(scrollbarRef);
 
   useEffect(() => {
     if (chatData?.length === 1) {
