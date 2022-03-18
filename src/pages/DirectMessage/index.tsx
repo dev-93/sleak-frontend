@@ -12,10 +12,13 @@ import { IDM } from '@typings/db';
 import makeSection from '@utils/makeSection';
 import useSWRInfinite from 'swr/infinite';
 import Scrollbars from 'react-custom-scrollbars-2';
+import useSocket from '@hooks/useSocket';
+import { toast } from 'react-toastify';
 
 const PAGE_SIZE = 20;
 const DirectMessage = () => {
   const { workspace, id } = useParams<{ workspace: string; id: string }>();
+  const [socket] = useSocket(workspace);
   const { data: myData } = useSWR('/api/users', fetcher);
   const { data: userData } = useSWR(`/api/workspaces/${workspace}/users/${id}`, fetcher);
   const [chat, onChangeChat, setChat] = useInput('');
@@ -67,6 +70,43 @@ const DirectMessage = () => {
     },
     [chat, workspace, id, myData, userData, chatData, mutateChat, setChat],
   );
+
+  const onMessage = useCallback(
+    (data: IDM) => {
+      if (data.SenderId === Number(id) && myData.id !== Number(id)) {
+        mutateChat((chatData) => {
+          chatData?.[0].unshift(data);
+          return chatData;
+        }, false).then(() => {
+          if (scrollbarRef.current) {
+            if (
+              scrollbarRef.current.getScrollHeight() <
+              scrollbarRef.current.getClientHeight() + scrollbarRef.current.getScrollTop() + 150
+            ) {
+              setTimeout(() => {
+                scrollbarRef.current?.scrollToBottom();
+              }, 100);
+            } else {
+              toast.success('새 메시지가 도착했습니다.', {
+                onClick() {
+                  scrollbarRef.current?.scrollToBottom();
+                },
+                closeOnClick: true,
+              });
+            }
+          }
+        });
+      }
+    },
+    [id, myData, mutateChat],
+  );
+
+  useEffect(() => {
+    socket?.on('dm', onMessage);
+    return () => {
+      socket?.off('dm', onMessage);
+    };
+  }, [socket, onMessage]);
 
   useEffect(() => {
     if (chatData?.length === 1) {
