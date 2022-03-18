@@ -66,7 +66,6 @@ const Workspace: VFC = () => {
 
   useEffect(() => {
     return () => {
-      console.info('disconnect socket', workspace);
       disconnectSocket();
     };
   }, [disconnectSocket, workspace]);
