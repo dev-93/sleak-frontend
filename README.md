@@ -8,7 +8,7 @@
 
 
 ## 초기셋팅
-- webpack, Babel
+- Webpack, Babel
  
 
 ## 사용기술
